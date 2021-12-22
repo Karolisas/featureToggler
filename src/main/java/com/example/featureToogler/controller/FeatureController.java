@@ -1,11 +1,7 @@
 package com.example.featureToogler.controller;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,17 +17,33 @@ public class FeatureController {
         return service.getFeatures();
     }
 
+    @GetMapping("/enabled")
+    public List<Feature> getAllEnabledFeatures() {
+        return service.getEnabledFeatures();
+    }
+
     @PostMapping
     public void createFeature() {
         service.createNewFeature(new Feature());
     }
 
-    @GetMapping("/userFeature")
-    public String userFeature(){
+    @PutMapping
+    public void enableFeature(@RequestParam Long id, @RequestParam boolean isEnabled) {
+        service.editFeature(id, isEnabled);
+    }
+
+    @DeleteMapping
+    public void deleteFeature(@RequestParam Long id) {
+        service.deleteFeature(id);
+    }
+
+    @GetMapping("/user")
+    public String userFeature() {
         return "userFeature accesed";
     }
-    @GetMapping("/adminFeature")
-    public String adminFeature(){
+
+    @GetMapping("/admin")
+    public String adminFeature() {
         return "adminFeature accesed";
     }
 }

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class Feature {
 
-    private final boolean enabled;
+    private boolean enabled;
 
     public Feature() {
         enabled = false;
@@ -28,6 +28,11 @@ public class Feature {
 
     public Feature setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Feature setEnabled(boolean enabled) {
+        this.enabled = enabled;
         return this;
     }
 
