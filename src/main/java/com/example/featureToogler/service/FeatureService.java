@@ -1,5 +1,9 @@
-package com.example.featureToogler.controller;
+package com.example.featureToogler.service;
 
+import com.example.featureToogler.dto.Feature;
+import com.example.featureToogler.dto.UserFeature;
+import com.example.featureToogler.repository.FeatureRepository;
+import com.example.featureToogler.repository.UserFeatureRepository;
 import com.example.featureToogler.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

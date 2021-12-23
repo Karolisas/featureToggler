@@ -1,4 +1,4 @@
-package com.example.featureToogler.controller;
+package com.example.featureToogler.dto;
 
 
 import javax.persistence.Entity;

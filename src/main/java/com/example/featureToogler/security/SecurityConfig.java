@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import static com.example.featureToogler.controller.Roles.ADMIN_USER;
-import static com.example.featureToogler.controller.Roles.SIMPLE_USER;
+import static com.example.featureToogler.security.Roles.ADMIN_USER;
+import static com.example.featureToogler.security.Roles.SIMPLE_USER;
 
 //@Configuration
 @EnableWebSecurity

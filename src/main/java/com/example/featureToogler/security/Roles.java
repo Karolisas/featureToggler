@@ -1,4 +1,4 @@
-package com.example.featureToogler.controller;
+package com.example.featureToogler.security;
 
 public enum Roles {
     SIMPLE_USER,

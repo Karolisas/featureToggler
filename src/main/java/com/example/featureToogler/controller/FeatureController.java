@@ -1,5 +1,8 @@
 package com.example.featureToogler.controller;
 
+import com.example.featureToogler.dto.Feature;
+import com.example.featureToogler.dto.UserFeature;
+import com.example.featureToogler.service.FeatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
