@@ -1,7 +1,11 @@
 package com.example.featureToogler.controller;
 
+import com.example.featureToogler.security.SecurityConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,56 +13,72 @@ import java.util.stream.Collectors;
 @Service
 public class FeatureService {
 
-    private final FeatureRepository repository;
+    @Autowired
+    SecurityConfig asd;
+
+    private final FeatureRepository featureRepository;
 
     private final UserFeatureRepository userFeatureRepository;
 
 
     public FeatureService(FeatureRepository featureRepository, UserFeatureRepository userFeatureRepository) {
-        this.repository = featureRepository;
+        this.featureRepository = featureRepository;
         this.userFeatureRepository = userFeatureRepository;
     }
 
     public List<Feature> getFeatures() {
-        return repository.findAll();
+        return featureRepository.findAll();
     }
 
     public void createNewFeature(Feature feature) {
-        repository.save(feature);
+        featureRepository.save(feature);
     }
 
     public void editFeature(Long id, boolean isEnabled) {
-        Optional.ofNullable(repository.getById(id))
-                .map(feature -> feature.setEnabled(isEnabled))
-                .map(a -> repository.save(a))
+        Optional.ofNullable(featureRepository.getById(id))
+                .map(feature -> feature.setEnabledGlobally(isEnabled))
+                .map(a -> featureRepository.save(a))
                 .orElseThrow();
     }
 
     public void deleteFeature(Long id) {
-        Optional.ofNullable(repository.getById(id))
-                .ifPresent(a -> repository.delete(a));
+        Optional.ofNullable(featureRepository.getById(id))
+                .ifPresent(a -> featureRepository.delete(a));
     }
 
     public List<Feature> getEnabledFeatures() {
-        return repository.findAll().stream()
-                .filter(Feature::isEnabled)
-                .collect(Collectors.toList());
+        return featureRepository.findEnabledFeatures();
     }
 
     public void enableUserFeature(Long userId, Long featureId) {
-        Optional.ofNullable(userFeatureRepository.findAllByUserId(userId))
-                .map(list -> !list.contains(featureId))//todo fix
-                .ifPresent(a -> {
-                    UserFeature userFeature = new UserFeature();
-                    userFeature.setUserId(userId);
-                    userFeature.setFeatureId(featureId);
-                    userFeatureRepository.save(userFeature);
-                });
+        List<Long> features = Optional.ofNullable(userFeatureRepository.findAllByUserId(userId))
+                .map(userFeatures -> userFeatures.stream()
+                        .map(UserFeature::getFeatureId)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
 
+        if (!features.contains(featureId)) {
+            UserFeature userFeature = new UserFeature();
+            userFeature.setUserId(userId);
+            userFeature.setFeatureId(featureId);
+            userFeatureRepository.save(userFeature);
+        }
     }
 
-    public List<UserFeature> getEanbledFeaturesForUser(Long userId) {
-        return userFeatureRepository.findAllByUserId(userId);
+    public List<UserFeature> getEnabledFeaturesOnlyForUser(Long userId) {
+        List<UserFeature> features = new ArrayList<>();
+        features.addAll(userFeatureRepository.findAllByUserId(userId));
+        return features;
+    }
+
+    public List<Feature> getCommonEnabledAndUserFeatures(Long userId) {
+        List<Feature> features = new ArrayList<>();
+        features.addAll(getEnabledFeatures());
+        features.addAll(featureRepository.findAllById(
+                userFeatureRepository.findAllByUserId(userId).stream()
+                        .map(UserFeature::getFeatureId)
+                        .collect(Collectors.toSet())));
+        return features;
     }
 
 }

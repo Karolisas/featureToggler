@@ -8,22 +8,22 @@ import javax.persistence.Id;
 @Entity
 public class Feature {
 
-    private boolean enabled;
+    private boolean enabledGlobally;
 
     public Feature() {
-        enabled = false;
+        enabledGlobally = false;
     }
 
     @Id
     @GeneratedValue
     private Long id;
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public boolean isEnabledGlobally() {
+        return enabledGlobally;
     }
 
     public Feature setId(Long id) {
@@ -31,16 +31,16 @@ public class Feature {
         return this;
     }
 
-    public Feature setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public Feature setEnabledGlobally(boolean enabled) {
+        this.enabledGlobally = enabled;
         return this;
     }
 
     @Override
     public String toString() {
         return "Feature{" +
-                " id=" + id +
-                ", enabled=" + enabled +
+                "enabledGlobally=" + enabledGlobally +
+                ", id=" + id +
                 '}';
     }
 }

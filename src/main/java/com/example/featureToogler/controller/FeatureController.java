@@ -17,9 +17,14 @@ public class FeatureController {
         return service.getFeatures();
     }
 
-    @GetMapping("/enabled")
+    @GetMapping("common/enabled")
     public List<Feature> getAllEnabledFeatures() {
         return service.getEnabledFeatures();
+    }
+
+    @GetMapping("/{userId}/enabled")
+    public List<Feature> getAllEnabledForUserFeatures(@PathVariable Long userId) {
+        return service.getCommonEnabledAndUserFeatures(userId);
     }
 
     @PostMapping
@@ -38,8 +43,8 @@ public class FeatureController {
     }
 
     @GetMapping("/{userId}")
-    public List<UserFeature> enableUserFeature(@PathVariable Long userId) {
-       return service.getEanbledFeaturesForUser(userId);
+    public List<UserFeature> commonAndEnabledForUserFeatures(@PathVariable Long userId) {
+       return service.getEnabledFeaturesOnlyForUser(userId);
     }
 
     @DeleteMapping

@@ -12,6 +12,6 @@ public interface FeatureRepository extends JpaRepository<Feature, Long>, JpaSpec
 
     List<Feature> findAll();
 
-    @Query("select f from Feature f where f.enabled = true")
+    @Query("select f from Feature f where f.enabledGlobally = true")
     List<Feature> findEnabledFeatures();
 }
