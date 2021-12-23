@@ -4,8 +4,6 @@ import com.example.featureToogler.dto.Feature;
 import com.example.featureToogler.dto.UserFeature;
 import com.example.featureToogler.repository.FeatureRepository;
 import com.example.featureToogler.repository.UserFeatureRepository;
-import com.example.featureToogler.security.SecurityConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,13 +15,9 @@ import java.util.stream.Collectors;
 @Service
 public class FeatureService {
 
-    @Autowired
-    SecurityConfig asd;
-
     private final FeatureRepository featureRepository;
 
     private final UserFeatureRepository userFeatureRepository;
-
 
     public FeatureService(FeatureRepository featureRepository, UserFeatureRepository userFeatureRepository) {
         this.featureRepository = featureRepository;
