@@ -32,18 +32,19 @@ public class FeatureController {
         service.editFeature(id, isEnabled);
     }
 
+    @PutMapping("/{userId}")
+    public void enableUserFeature(@PathVariable Long userId, @RequestParam Long featureId) {
+        service.enableUserFeature(userId, featureId);
+    }
+
+    @GetMapping("/{userId}")
+    public List<UserFeature> enableUserFeature(@PathVariable Long userId) {
+       return service.getEanbledFeaturesForUser(userId);
+    }
+
     @DeleteMapping
     public void deleteFeature(@RequestParam Long id) {
         service.deleteFeature(id);
     }
 
-    @GetMapping("/user")
-    public String userFeature() {
-        return "userFeature accesed";
-    }
-
-    @GetMapping("/admin")
-    public String adminFeature() {
-        return "adminFeature accesed";
-    }
 }

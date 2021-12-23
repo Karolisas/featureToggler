@@ -11,8 +11,12 @@ public class FeatureService {
 
     private final FeatureRepository repository;
 
-    public FeatureService(FeatureRepository featureRepository) {
+    private final UserFeatureRepository userFeatureRepository;
+
+
+    public FeatureService(FeatureRepository featureRepository, UserFeatureRepository userFeatureRepository) {
         this.repository = featureRepository;
+        this.userFeatureRepository = userFeatureRepository;
     }
 
     public List<Feature> getFeatures() {
@@ -26,7 +30,7 @@ public class FeatureService {
     public void editFeature(Long id, boolean isEnabled) {
         Optional.ofNullable(repository.getById(id))
                 .map(feature -> feature.setEnabled(isEnabled))
-                .map(a->repository.save(a))
+                .map(a -> repository.save(a))
                 .orElseThrow();
     }
 
@@ -40,4 +44,21 @@ public class FeatureService {
                 .filter(Feature::isEnabled)
                 .collect(Collectors.toList());
     }
+
+    public void enableUserFeature(Long userId, Long featureId) {
+        Optional.ofNullable(userFeatureRepository.findAllByUserId(userId))
+                .map(list -> !list.contains(featureId))//todo fix
+                .ifPresent(a -> {
+                    UserFeature userFeature = new UserFeature();
+                    userFeature.setUserId(userId);
+                    userFeature.setFeatureId(featureId);
+                    userFeatureRepository.save(userFeature);
+                });
+
+    }
+
+    public List<UserFeature> getEanbledFeaturesForUser(Long userId) {
+        return userFeatureRepository.findAllByUserId(userId);
+    }
+
 }
