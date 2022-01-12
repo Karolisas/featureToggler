@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/feature")
+@RequestMapping(FeatureController.BASE_URL)
 public class FeatureController {
 
+    public static final String BASE_URL = "/feature";
     @Autowired
     private FeatureService service;
 
@@ -20,7 +21,7 @@ public class FeatureController {
         return service.getFeatures();
     }
 
-    @GetMapping("common/enabled")
+    @GetMapping("/common/enabled")
     public List<Feature> getAllEnabledFeatures() {
         return service.getEnabledFeatures();
     }
