@@ -5,6 +5,7 @@ import com.example.featureToogler.dto.UserFeature;
 import com.example.featureToogler.repository.FeatureRepository;
 import com.example.featureToogler.repository.UserFeatureRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,7 @@ public class FeatureService {
         featureRepository.save(feature);
     }
 
+    @Transactional
     public void editFeature(Long id, boolean isEnabled) {
         Optional.ofNullable(featureRepository.getById(id))
                 .map(feature -> feature.setEnabledGlobally(isEnabled))
