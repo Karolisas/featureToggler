@@ -37,6 +37,24 @@ public class Feature {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Feature feature = (Feature) o;
+
+        if (enabledGlobally != feature.enabledGlobally) return false;
+        return id != null ? id.equals(feature.id) : feature.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (enabledGlobally ? 1 : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Feature{" +
                 "enabledGlobally=" + enabledGlobally +

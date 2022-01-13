@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(FeatureController.BASE_URL)
+@RequestMapping(FeatureController.FEATURE_API_BASE_PATH)
 public class FeatureController {
 
-    public static final String BASE_URL = "/feature";
+    public static final String FEATURE_API_BASE_PATH = "/feature";
     @Autowired
     private FeatureService service;
 
