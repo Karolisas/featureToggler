@@ -22,8 +22,8 @@ public class FeatureController {
     }
 
     @GetMapping("/common/enabled")
-    public List<Feature> getAllEnabledFeatures() {
-        return service.getEnabledFeatures();
+    public List<Feature> getAllEnabledCommonFeatures() {
+        return service.getEnabledCommonFeatures();
     }
 
     @GetMapping("/{userId}/enabled")
@@ -38,7 +38,7 @@ public class FeatureController {
 
     @PutMapping
     public void enableFeature(@RequestParam Long id, @RequestParam boolean isEnabled) {
-        service.editFeature(id, isEnabled);
+        service.enableDisableCommonFeature(id, isEnabled);
     }
 
     @PutMapping("/{userId}")

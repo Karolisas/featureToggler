@@ -34,7 +34,7 @@ public class FeatureService {
     }
 
     @Transactional
-    public void editFeature(Long id, boolean isEnabled) {
+    public void enableDisableCommonFeature(Long id, boolean isEnabled) {
         Optional.ofNullable(featureRepository.getById(id))
                 .map(feature -> feature.setEnabledGlobally(isEnabled))
                 .map(a -> featureRepository.save(a))
@@ -46,7 +46,7 @@ public class FeatureService {
                 .ifPresent(a -> featureRepository.delete(a));
     }
 
-    public List<Feature> getEnabledFeatures() {
+    public List<Feature> getEnabledCommonFeatures() {
         return featureRepository.findEnabledFeatures();
     }
 
@@ -73,7 +73,7 @@ public class FeatureService {
 
     public List<Feature> getCommonEnabledAndUserFeatures(Long userId) {
         List<Feature> features = new ArrayList<>();
-        features.addAll(getEnabledFeatures());
+        features.addAll(getEnabledCommonFeatures());
         features.addAll(featureRepository.findAllById(
                 userFeatureRepository.findAllByUserId(userId).stream()
                         .map(UserFeature::getFeatureId)
