@@ -38,7 +38,7 @@ public class FeatureService {
         Optional.ofNullable(featureRepository.getById(id))
                 .map(feature -> feature.setEnabledGlobally(isEnabled))
                 .map(a -> featureRepository.save(a))
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Feature not found"));
     }
 
     public void deleteFeature(Long id) {

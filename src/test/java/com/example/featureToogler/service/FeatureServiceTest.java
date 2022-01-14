@@ -1,43 +1,61 @@
 package com.example.featureToogler.service;
 
 import com.example.featureToogler.dto.Feature;
-import org.junit.jupiter.api.*;
+import com.example.featureToogler.repository.FeatureRepository;
+import com.example.featureToogler.repository.UserFeatureRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-//    @Rollback(value = false)
-@Transactional
 class FeatureServiceTest {
 
     public static final long USER_ID = 1L;
     @Autowired
     FeatureService featureService;
 
+    @Autowired
+    FeatureRepository featureRepository;
+
+    @Autowired
+    UserFeatureRepository userFeatureRepository;
+
+    private Feature feature1;
+    private Feature feature2;
+
     @BeforeEach
     public void setUp() {
+        feature1 = new Feature();
+        feature2 = new Feature();
+        featureService.createNewFeature(feature1);
+        featureService.createNewFeature(feature2);
+    }
+
+    @AfterEach
+    public void deleteTableValues() {
+        featureRepository.deleteAll();
+        userFeatureRepository.deleteAll();
     }
 
     @Test
     public void getFeatures() {
-        Feature feature = new Feature();
-        featureService.getFeatures();
-        Assertions.assertEquals(Collections.emptyList(), featureService.getFeatures());
+        Assertions.assertArrayEquals(List.of(feature1, feature2).toArray(), featureService.getFeatures().toArray());
+        Assertions.assertEquals(List.of(feature1, feature2), featureService.getFeatures());
     }
 
     @Test
     public void createNewFeature_defaultDisabledTest() {
-        featureService.createNewFeature(new Feature());
-        Assertions.assertEquals(1, featureService.getFeatures().size());
+        Assertions.assertEquals(2, featureService.getFeatures().size());
         Assertions.assertEquals(0, featureService.getEnabledCommonFeatures().size());
         Assertions.assertEquals(false, featureService.getFeatures().stream()
                 .findFirst()
@@ -47,11 +65,10 @@ class FeatureServiceTest {
 
     @Test
     public void editFeature_enableFeature() {
-        featureService.createNewFeature(new Feature());
         Assertions.assertEquals(0, featureService.getEnabledCommonFeatures().size());
-        featureService.enableDisableCommonFeature(1L, true);
+        featureService.enableDisableCommonFeature(feature1.getId(), true);
         Assertions.assertEquals(1, featureService.getEnabledCommonFeatures().size());
-        featureService.enableDisableCommonFeature(1L, false);
+        featureService.enableDisableCommonFeature(feature1.getId(), false);
         Assertions.assertEquals(0, featureService.getEnabledCommonFeatures().size());
     }
 
@@ -59,28 +76,31 @@ class FeatureServiceTest {
     public void deleteFeature_Test() {
         Feature feature = new Feature();
         featureService.createNewFeature(feature);
-        Assertions.assertEquals(feature, featureService.getFeatures().stream().findFirst().get());
-        featureService.deleteFeature(1L);
-        Assertions.assertEquals(0, featureService.getFeatures().size());
+        Assertions.assertEquals(feature, featureService.getFeatures().stream()
+                .filter(f -> f.equals(feature))
+                .findFirst()
+                .orElse(null));
+
+        featureService.deleteFeature(feature.getId());
+        Assertions.assertNull(featureService.getFeatures().stream()
+                .filter(f -> f.getId().equals(feature.getId()))
+                .findFirst()
+                .orElse(null));
     }
 
     @Test
     public void getEnabledFeaturesTest() {
-        featureService.createNewFeature(new Feature());
-        featureService.createNewFeature(new Feature());
         Assertions.assertEquals(2, featureService.getFeatures().size());
         Assertions.assertEquals(0, featureService.getEnabledCommonFeatures().size());
 
-        featureService.enableDisableCommonFeature(1L, true);
+        featureService.enableDisableCommonFeature(feature1.getId(), true);
         Assertions.assertEquals(1, featureService.getEnabledCommonFeatures().size());
     }
 
     @Test
     public void enableUserFeature_singleFeatureTest() {
-        featureService.createNewFeature(new Feature());
-        featureService.createNewFeature(new Feature());
-        Assertions.assertEquals(2, featureService.getFeatures().size());
-        Assertions.assertEquals(0, featureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
+        Assertions.assertEquals(true, featureService.getFeatures().containsAll(List.of(feature1, feature2)));
+        Assertions.assertEquals(0, featureService.getEnabledFeaturesOnlyForUser(feature1.getId()).size());
         Assertions.assertEquals(0, featureService.getEnabledCommonFeatures().size());
 
         featureService.enableUserFeature(1L, 2L);
@@ -91,8 +111,6 @@ class FeatureServiceTest {
 
     @Test
     public void getEnabledFeaturesOnlyForUser() {
-        featureService.createNewFeature(new Feature());
-        featureService.createNewFeature(new Feature());
         Assertions.assertEquals(2, featureService.getFeatures().size());
         Assertions.assertEquals(0, featureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(0, featureService.getEnabledCommonFeatures().size());
@@ -104,20 +122,23 @@ class FeatureServiceTest {
 
     @Test
     public void getCommonEnabledAndUserFeatures() {
-        featureService.createNewFeature(new Feature());
-        featureService.createNewFeature(new Feature());
         Assertions.assertEquals(2, featureService.getFeatures().size());
         Assertions.assertEquals(0, featureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(0, featureService.getEnabledCommonFeatures().size());
         Assertions.assertEquals(0, featureService.getCommonEnabledAndUserFeatures(USER_ID).size());
 
 
-        featureService.enableUserFeature(USER_ID, 2L);
-        featureService.enableDisableCommonFeature(1L, true);
+        featureService.enableUserFeature(USER_ID, feature2.getId());
+        featureService.enableDisableCommonFeature(feature1.getId(), true);
 
         Assertions.assertEquals(1, featureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(1, featureService.getEnabledCommonFeatures().size());
         Assertions.assertEquals(2, featureService.getCommonEnabledAndUserFeatures(USER_ID).size());
+    }
 
+    @Test
+    public void getEnabledUserFeatures_notExist() {
+        Assertions.assertEquals(0, featureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
+        Assertions.assertEquals(0, featureService.getCommonEnabledAndUserFeatures(USER_ID).size());
     }
 }
