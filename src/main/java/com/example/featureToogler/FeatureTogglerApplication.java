@@ -13,7 +13,7 @@ public class FeatureTogglerApplication {
 
 	@Bean
 	public void	start(){
-		System.out.println("XXXXX************** FeatureTooglerApplication XXXXX");
+		System.out.println("\u001B[36m" +" XXXXX FeatureTooglerApplication XXXXX");
 	}
 
 }
