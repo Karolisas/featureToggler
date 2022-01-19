@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(FeatureController.FEATURE_API_BASE_PATH)
+@RequestMapping(value = FeatureController.FEATURE_API_BASE_PATH, consumes = "application/json")
 public class FeatureController {
 
-    public static final String FEATURE_API_BASE_PATH = "/feature";
+    public static final String FEATURE_API_BASE_PATH = "/features";
+
     @Autowired
     private FeatureService service;
 
@@ -21,34 +22,34 @@ public class FeatureController {
         return service.getFeatures();
     }
 
-    @GetMapping("/common/enabled")
-    public List<Feature> getAllEnabledCommonFeatures() {
-        return service.getEnabledCommonFeatures();
-    }
-
-    @GetMapping("/{userId}/enabled")
-    public List<Feature> getAllEnabledForUserFeatures(@PathVariable Long userId) {
-        return service.getCommonEnabledAndUserFeatures(userId);
-    }
-
     @PostMapping
-    public void createFeature() {
-        service.createNewFeature(new Feature());
+    public Feature createFeature() {
+        return service.createNewFeature(new Feature());
     }
 
     @PutMapping
-    public void enableFeature(@RequestParam Long id, @RequestParam boolean isEnabled) {
-        service.enableDisableCommonFeature(id, isEnabled);
+    public Feature enableGlobalFeature(@RequestParam Long featureId, @RequestParam boolean isEnabled) {
+        return service.enableDisableGlobalFeature(featureId, isEnabled);
     }
 
-    @PutMapping("/{userId}")
-    public void enableUserFeature(@PathVariable Long userId, @RequestParam Long featureId) {
-        service.enableUserFeature(userId, featureId);
+    @GetMapping("/enabled")
+    public List<Feature> getEnabledGlobalFeatures() {
+        return service.getEnabledGlobalFeatures();
+    }
+
+    @GetMapping("/enabled/{userId}")
+    public List<Feature> getGlobalEnabledAndUserFeatures(@PathVariable Long userId) {
+        return service.getGlobalEnabledAndUserFeatures(userId);
+    }
+
+    @PutMapping("/{userId}") //todo maybe /{featureId}/enabled{userId}
+    public UserFeature enableUserFeature(@PathVariable Long userId, @RequestParam Long featureId) {
+        return service.enableUserFeature(userId, featureId);
     }
 
     @GetMapping("/{userId}")
-    public List<UserFeature> commonAndEnabledForUserFeatures(@PathVariable Long userId) {
-       return service.getEnabledFeaturesOnlyForUser(userId);
+    public List<UserFeature> globalAndEnabledForUserFeatures(@PathVariable Long userId) {
+        return service.getEnabledFeaturesOnlyForUser(userId);
     }
 
     @DeleteMapping

@@ -1,5 +1,6 @@
 package com.example.featureToogler.security;
 
+import com.example.featureToogler.controller.FeatureController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,9 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest().authenticated();
                 .antMatchers("/").permitAll()
 //                .antMatchers("/feature").permitAll()
-                .antMatchers(HttpMethod.GET, "/feature").hasAnyRole(SIMPLE_USER.name(), ADMIN_USER.name())
-                .antMatchers(HttpMethod.POST, "/feature/**").hasRole(ADMIN_USER.name())
-                .antMatchers(HttpMethod.PUT, "/feature/**").hasRole(ADMIN_USER.name())
+                .antMatchers(HttpMethod.GET, FeatureController.FEATURE_API_BASE_PATH).hasAnyRole(SIMPLE_USER.name(), ADMIN_USER.name())
+                .antMatchers(HttpMethod.POST, FeatureController.FEATURE_API_BASE_PATH + "/**").hasRole(ADMIN_USER.name())
+                .antMatchers(HttpMethod.PUT, FeatureController.FEATURE_API_BASE_PATH + "/**").hasRole(ADMIN_USER.name())
 
                 .anyRequest().authenticated()
                 .and()

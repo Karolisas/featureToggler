@@ -1,6 +1,5 @@
 package com.example.featureToogler;
 
-import com.example.featureToogler.dto.Feature;
 import com.example.featureToogler.service.FeatureService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,14 +25,6 @@ class FeatureTogglerApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
-
-	@Test
-//	@WithMockUser(username="admin", roles = {"ADMIN_USER"})
-	void authorizeCallTest(){
-		featureService.createNewFeature(new Feature());
-		featureService.enableDisableCommonFeature(1L,true);
-		featureService.getFeatures().forEach(a-> System.out.println(a));
 	}
 
 }
