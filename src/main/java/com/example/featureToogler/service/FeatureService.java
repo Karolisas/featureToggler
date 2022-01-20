@@ -6,6 +6,7 @@ import com.example.featureToogler.repository.UserFeatureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class FeatureService {
     }
 
     public List<Feature> getEnabledGlobalFeatures() {
-        return featureRepository.findEnabledFeatures();
+        return featureRepository.findEnabledFeatures().orElse(Collections.emptyList());
     }
 
     public void deleteFeature(Long id) {

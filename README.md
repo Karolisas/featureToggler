@@ -1,7 +1,9 @@
-FeatureToggler allows to create, edit, enable features (simple object)
-for all or for single user. See FeatureController for available operations.
+1. Import as a gradle project
+2. Start project with the command: gradle bootRun
+3. Server starts on port :8081 (to change go to application.properties set "server.port")
 
-bootRun to launch server.
-
-Use PostMan to manipulate and test API (FeatureToggler.postman_collection.json added). Also check unit and integration tests
-for use cases.
+FeatureToggler allows to create, enable/disable features (Feature object) globally for all 
+or for a single user. See FeatureController, UserFeatureController for available operations 
+and unit tests accordingly.
+Postman collection included (FeatureToggler.postman_collection.json)
+to operate FeatureToggler API and test http requests.
