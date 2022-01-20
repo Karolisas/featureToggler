@@ -1,7 +1,6 @@
 package com.example.featureToogler.controller;
 
 import com.example.featureToogler.dto.Feature;
-import com.example.featureToogler.dto.UserFeature;
 import com.example.featureToogler.service.FeatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,29 +31,14 @@ public class FeatureController {
         return service.setEnabledGlobalFeature(featureId, isEnabled);
     }
 
-    @GetMapping("/enabled")
-    public List<Feature> getEnabledGlobalFeatures() {
-        return service.getEnabledGlobalFeatures();
-    }
-
-    @GetMapping("/enabled/{userId}/all")
-    public List<Feature> getGlobalEnabledAndUserFeatures(@PathVariable Long userId) {
-        return service.getGlobalEnabledAndUserFeatures(userId);
-    }
-
-    @PutMapping("/enabled") //todo maybe /{featureId}/enabled{userId}
-    public UserFeature enableUserFeature(@RequestParam Long userId, @RequestParam Long featureId) {
-        return service.enableUserFeature(userId, featureId);
-    }
-
-    @GetMapping("/enabled/{userId}")
-    public List<UserFeature> enabledForUserFeatures(@PathVariable Long userId) {
-        return service.getEnabledFeaturesOnlyForUser(userId);
-    }
-
     @DeleteMapping
     public void deleteFeature(@RequestParam Long id) {
         service.deleteFeature(id);
+    }
+
+    @GetMapping("/enabled")
+    public List<Feature> getEnabledGlobalFeatures() {
+        return service.getEnabledGlobalFeatures();
     }
 
 }
