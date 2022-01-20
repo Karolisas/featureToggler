@@ -145,7 +145,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8081/features?featureId=1&isEnabled=true",
+							"raw": "http://localhost:8081/features?featureId=4&isEnabled=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -157,7 +157,7 @@
 							"query": [
 								{
 									"key": "featureId",
-									"value": "1"
+									"value": "4"
 								},
 								{
 									"key": "isEnabled",
@@ -169,7 +169,7 @@
 					"response": []
 				},
 				{
-					"name": "FeatureEnableForUser",
+					"name": "FeatureEnableForUser_1",
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -204,21 +204,18 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8081/features/1?featureId=4",
+							"raw": "http://localhost:8081/users/1/features/2/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8081",
 							"path": [
+								"users",
+								"1",
 								"features",
-								"1"
-							],
-							"query": [
-								{
-									"key": "featureId",
-									"value": "4"
-								}
+								"2",
+								""
 							]
 						}
 					},
@@ -246,7 +243,13 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -257,15 +260,17 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/feature/1",
+							"raw": "http://localhost:8081/users/1/features/",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8081",
 							"path": [
-								"feature",
-								"1"
+								"users",
+								"1",
+								"features",
+								""
 							]
 						}
 					},
@@ -293,7 +298,13 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -304,15 +315,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/feature/common/enabled",
+							"raw": "http://localhost:8081/features/enabled",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8081",
 							"path": [
-								"feature",
-								"common",
+								"features",
 								"enabled"
 							]
 						}
@@ -320,7 +330,7 @@
 					"response": []
 				},
 				{
-					"name": "FeaturesAllForUser_1",
+					"name": "FeaturesOnlyForUser_1",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -341,7 +351,13 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "",
@@ -352,64 +368,16 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/feature/1/enabled",
+							"raw": "http://localhost:8081/users/1/featuresOwn",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8081",
 							"path": [
-								"feature",
+								"users",
 								"1",
-								"enabled"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "FeaturesGlobalEnabledDoubleCheck",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "admin",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "admin",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/feature/1/enabled",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"feature",
-								"1",
-								"enabled"
+								"featuresOwn"
 							]
 						}
 					},

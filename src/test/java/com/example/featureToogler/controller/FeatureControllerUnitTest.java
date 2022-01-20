@@ -148,8 +148,8 @@ class FeatureControllerUnitTest {
     @Test
     @WithMockAdminUser
     void deleteFeature_AllowedTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(delete(FeatureController.FEATURE_API_BASE_PATH))
-                        .param("id", String.valueOf(1)))
+        mockMvc.perform(addMockHttpServletRequestHeaders(delete(FeatureController.FEATURE_API_BASE_PATH + "/{id}", 1))
+                )
                 .andDo(print())
                 .andExpect(status().isOk());
     }

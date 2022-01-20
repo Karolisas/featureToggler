@@ -31,8 +31,8 @@ public class FeatureController {
         return service.setEnabledGlobalFeature(featureId, isEnabled);
     }
 
-    @DeleteMapping
-    public void deleteFeature(@RequestParam Long id) {
+    @DeleteMapping ("/{id}")
+    public void deleteFeature(@PathVariable Long id) {
         service.deleteFeature(id);
     }
 

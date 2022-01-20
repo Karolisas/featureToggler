@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.example.featureToogler.controller.UserFeatureController.USER_FEATURE_API_BASE_PATH;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -63,7 +64,7 @@ class EnableFeatureControllerUnitTest {
     @WithMockSimpleAndAdminUser
     void getAllEnabledForUserFeatures_allowedTest() throws Exception {
         mockMvc.perform(addMockHttpServletRequestHeaders(
-                        get(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}", 1))
+                        get(USER_FEATURE_API_BASE_PATH + "/{userId}/features", 1))
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -73,9 +74,8 @@ class EnableFeatureControllerUnitTest {
     @Test
     @WithMockAdminUser
     void enableUserFeature_adminAllowedTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(put(FeatureController.FEATURE_API_BASE_PATH + "/enabled"))
-                        .param("userId", String.valueOf(1))
-                        .param("featureId", String.valueOf(1L)))
+        mockMvc.perform(addMockHttpServletRequestHeaders(put(USER_FEATURE_API_BASE_PATH + "/{userId}/features/{featureId}", 1, 1))
+                )
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -93,7 +93,7 @@ class EnableFeatureControllerUnitTest {
     @Test
     @WithMockAdminUser
     void globalAndEnabledForUserFeatures_adminAllowedTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(get(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}", 1))
+        mockMvc.perform(addMockHttpServletRequestHeaders(get(USER_FEATURE_API_BASE_PATH + "/{userId}/featuresOwn", 1))
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -103,7 +103,7 @@ class EnableFeatureControllerUnitTest {
     @WithMockSimpleUser
     void globalAndEnabledForUserFeatures_userAllowedTest() throws Exception {
         mockMvc.perform(addMockHttpServletRequestHeaders(
-                        get(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}/all", 1))
+                        get(USER_FEATURE_API_BASE_PATH + "/{userId}/features/", 1))
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
