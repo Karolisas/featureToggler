@@ -73,16 +73,22 @@ class FeatureServiceTest {
     @Test
     public void editFeature_enableGlobalFeature() {
         Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
-        Assertions.assertEquals(true, featureService.enableDisableGlobalFeature(feature1.getId(), true).isEnabledGlobally());
-        Assertions.assertEquals(feature1.getId(), featureService.getEnabledGlobalFeatures().stream().findFirst().map(Feature::getId).orElse(null));
-        featureService.enableDisableGlobalFeature(feature1.getId(), false);
+        Assertions.assertEquals(true, featureService.setEnabledGlobalFeature(feature1.getId(), true).isEnabledGlobally());
+        Assertions.assertEquals(1, featureService.getEnabledGlobalFeatures().size());
+        Assertions.assertEquals(feature1.getId(), featureService.getEnabledGlobalFeatures()
+                .stream()
+                .map(Feature::getId)
+                .filter(id -> id.equals(feature1.getId()))
+                .findFirst()
+                .orElse(null));
+        featureService.setEnabledGlobalFeature(feature1.getId(), false);
         Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
     }
 
     @Test
     public void editFeature_whichDoesNotExist() {
         Assertions.assertEquals(2, featureService.getFeatures().size());
-        Assertions.assertThrows(EntityNotFoundException.class, () -> featureService.enableDisableGlobalFeature(33L, true));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> featureService.setEnabledGlobalFeature(33L, true));
     }
 
     @Test
@@ -103,7 +109,7 @@ class FeatureServiceTest {
         Assertions.assertEquals(2, featureService.getFeatures().size());
         Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
 
-        featureService.enableDisableGlobalFeature(feature1.getId(), true);
+        featureService.setEnabledGlobalFeature(feature1.getId(), true);
         Assertions.assertEquals(1, featureService.getEnabledGlobalFeatures().size());
     }
 
@@ -139,7 +145,7 @@ class FeatureServiceTest {
 
 
         featureService.enableUserFeature(USER_ID, feature2.getId());
-        featureService.enableDisableGlobalFeature(feature1.getId(), true);
+        featureService.setEnabledGlobalFeature(feature1.getId(), true);
 
         Assertions.assertEquals(1, featureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(1, featureService.getEnabledGlobalFeatures().size());

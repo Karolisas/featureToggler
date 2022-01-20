@@ -29,7 +29,7 @@ public class FeatureController {
 
     @PutMapping
     public Feature enableGlobalFeature(@RequestParam Long featureId, @RequestParam boolean isEnabled) {
-        return service.enableDisableGlobalFeature(featureId, isEnabled);
+        return service.setEnabledGlobalFeature(featureId, isEnabled);
     }
 
     @GetMapping("/enabled")
@@ -37,18 +37,18 @@ public class FeatureController {
         return service.getEnabledGlobalFeatures();
     }
 
-    @GetMapping("/enabled/{userId}")
+    @GetMapping("/enabled/{userId}/all")
     public List<Feature> getGlobalEnabledAndUserFeatures(@PathVariable Long userId) {
         return service.getGlobalEnabledAndUserFeatures(userId);
     }
 
-    @PutMapping("/{userId}") //todo maybe /{featureId}/enabled{userId}
-    public UserFeature enableUserFeature(@PathVariable Long userId, @RequestParam Long featureId) {
+    @PutMapping("/enabled") //todo maybe /{featureId}/enabled{userId}
+    public UserFeature enableUserFeature(@RequestParam Long userId, @RequestParam Long featureId) {
         return service.enableUserFeature(userId, featureId);
     }
 
-    @GetMapping("/{userId}")
-    public List<UserFeature> globalAndEnabledForUserFeatures(@PathVariable Long userId) {
+    @GetMapping("/enabled/{userId}")
+    public List<UserFeature> enabledForUserFeatures(@PathVariable Long userId) {
         return service.getEnabledFeaturesOnlyForUser(userId);
     }
 

@@ -34,7 +34,7 @@ public class FeatureService {
     }
 
     @Transactional
-    public Feature enableDisableGlobalFeature(Long featureId, boolean isEnabled) {
+    public Feature setEnabledGlobalFeature(Long featureId, boolean isEnabled) {
         return Optional.ofNullable(featureRepository.getById(featureId))
                 .map(f -> {
                             f.setEnabledGlobally(isEnabled);

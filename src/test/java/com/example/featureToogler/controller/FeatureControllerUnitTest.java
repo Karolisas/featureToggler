@@ -20,9 +20,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(FeatureController.class)
@@ -57,132 +58,131 @@ class FeatureControllerUnitTest {
     @Test
     @WithMockSimpleAndAdminUser
     void getAllFeatures_contentTypeHeaderNotSetTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(FeatureController.FEATURE_API_BASE_PATH))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isUnsupportedMediaType());
+        mockMvc.perform(get(FeatureController.FEATURE_API_BASE_PATH))
+                .andDo(print())
+                .andExpect(status().isUnsupportedMediaType());
     }
 
     @Test
     @WithMockSimpleAndAdminUser
     void getAllFeatures_contentTypeHeaderApplicationJsonTest() throws Exception {
         mockMvc.perform(addMockHttpServletRequestHeaders(
-                        MockMvcRequestBuilders.get(FeatureController.FEATURE_API_BASE_PATH)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                        get(FeatureController.FEATURE_API_BASE_PATH)))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithAnonymousUser
     void getAllFeatures_unAuthorizedTest() throws Exception {
         mockMvc.perform(addMockHttpServletRequestHeaders(
-                        MockMvcRequestBuilders.get(FeatureController.FEATURE_API_BASE_PATH)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                        get(FeatureController.FEATURE_API_BASE_PATH)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockSimpleUser
     void createFeature_forbiddenForSimpleUserTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(MockMvcRequestBuilders.post(FeatureController.FEATURE_API_BASE_PATH)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+        mockMvc.perform(addMockHttpServletRequestHeaders(post(FeatureController.FEATURE_API_BASE_PATH)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockAdminUser
     void createFeature_allowedForAdminTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(MockMvcRequestBuilders.post(FeatureController.FEATURE_API_BASE_PATH)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(addMockHttpServletRequestHeaders(post(FeatureController.FEATURE_API_BASE_PATH)))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockSimpleAndAdminUser
     void getAllEnabledFeatures_allowedTest() throws Exception {
         mockMvc.perform(addMockHttpServletRequestHeaders(
-                        MockMvcRequestBuilders.get(FeatureController.FEATURE_API_BASE_PATH + "/enabled")))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                        get(FeatureController.FEATURE_API_BASE_PATH + "/enabled")))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockSimpleAndAdminUser
     void getAllEnabledForUserFeatures_allowedTest() throws Exception {
         mockMvc.perform(addMockHttpServletRequestHeaders(
-                        MockMvcRequestBuilders.get(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}", 1))
+                        get(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}", 1))
                 )
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockAdminUser
     void enableFeature_adminAllowedTest() throws Exception {
         mockMvc.perform(addMockHttpServletRequestHeaders(
-                        MockMvcRequestBuilders.put(FeatureController.FEATURE_API_BASE_PATH))
+                        put(FeatureController.FEATURE_API_BASE_PATH))
                         .param("featureId", String.valueOf(1L))
                         .param("isEnabled", String.valueOf(true)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockSimpleUser
     void enableFeature_userForbiddenTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(MockMvcRequestBuilders.put(FeatureController.FEATURE_API_BASE_PATH))
-                        .param("id", String.valueOf(1L))
+        mockMvc.perform(addMockHttpServletRequestHeaders(put(FeatureController.FEATURE_API_BASE_PATH))
+                        .param("featureId", String.valueOf(1L))
                         .param("isEnabled", String.valueOf(true)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockAdminUser
     void enableUserFeature_adminAllowedTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(MockMvcRequestBuilders.put(FeatureController.FEATURE_API_BASE_PATH + "/{userId}", 1))
-
+        mockMvc.perform(addMockHttpServletRequestHeaders(put(FeatureController.FEATURE_API_BASE_PATH + "/enabled"))
+                        .param("userId", String.valueOf(1))
                         .param("featureId", String.valueOf(1L)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockSimpleUser
     void enableUserFeature_userForbiddenTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(MockMvcRequestBuilders.put(FeatureController.FEATURE_API_BASE_PATH + "/{userId}", 1))
+        mockMvc.perform(addMockHttpServletRequestHeaders(put(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}", 1))
                         .param("featureId", String.valueOf(1L)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
 
     @Test
     @WithMockAdminUser
-    void commonAndEnabledForUserFeatures_adminAllowedTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(MockMvcRequestBuilders.get(FeatureController.FEATURE_API_BASE_PATH + "/{userId}", 1))
+    void globalAndEnabledForUserFeatures_adminAllowedTest() throws Exception {
+        mockMvc.perform(addMockHttpServletRequestHeaders(get(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}", 1))
                 )
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockSimpleUser
-    void commonAndEnabledForUserFeatures_userAllowedTest() throws Exception {
+    void globalAndEnabledForUserFeatures_userAllowedTest() throws Exception {
         mockMvc.perform(addMockHttpServletRequestHeaders(
-                        MockMvcRequestBuilders.get(FeatureController.FEATURE_API_BASE_PATH + "/{userId}", 1))
+                        get(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}/all", 1))
                 )
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockSimpleUser
     void deleteFeature_notAllowedTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(MockMvcRequestBuilders.delete(FeatureController.FEATURE_API_BASE_PATH + "/{userId}", 1))
-
+        mockMvc.perform(addMockHttpServletRequestHeaders(delete(FeatureController.FEATURE_API_BASE_PATH ))
                         .param("id", String.valueOf(1)))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
     private MockHttpServletRequestBuilder addMockHttpServletRequestHeaders(MockHttpServletRequestBuilder requestBuilder) {
