@@ -83,8 +83,8 @@ class EnableFeatureControllerUnitTest {
     @Test
     @WithMockSimpleUser
     void enableUserFeature_userForbiddenTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(put(FeatureController.FEATURE_API_BASE_PATH + "/enabled/{userId}", 1))
-                        .param("featureId", String.valueOf(1L)))
+        mockMvc.perform(addMockHttpServletRequestHeaders(put(USER_FEATURE_API_BASE_PATH + "/{userId}/features/{featureId}/asd", 1, 1))
+                )
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }

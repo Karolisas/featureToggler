@@ -18,7 +18,6 @@ public class UserFeature {
 
     private Long featureId;
 
-
     public Long getUserId() {
         return userId;
     }
