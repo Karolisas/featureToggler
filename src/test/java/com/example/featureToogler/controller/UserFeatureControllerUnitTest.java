@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest({UserFeatureController.class})
 @ContextConfiguration
 //    @SpringBootTest
-class EnableFeatureControllerUnitTest {
+class UserFeatureControllerUnitTest {
 
     @Autowired
     MockMvc mockMvc;
