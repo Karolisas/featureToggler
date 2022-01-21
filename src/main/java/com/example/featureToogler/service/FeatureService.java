@@ -6,6 +6,7 @@ import com.example.featureToogler.repository.UserFeatureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,14 @@ public class FeatureService {
         return featureRepository.save(feature);
     }
 
+    /**
+     * Feature is toggled On/Off for all users (globally).
+     *
+     * @param featureId The unique Feature id
+     * @param isEnabled true to enable, false to disable
+     * @return Feature
+     * @throws javax.persistence.EntityNotFoundException if feature does not exist
+     */
     @Transactional
     public Feature setEnabledGlobalFeature(Long featureId, boolean isEnabled) {
         return Optional.ofNullable(featureRepository.getById(featureId))
@@ -35,7 +44,7 @@ public class FeatureService {
                             f.setEnabledGlobally(isEnabled);
                             return featureRepository.save(f);
                         }
-                ).orElse(null);
+                ).orElseThrow(EntityNotFoundException::new);
     }
 
     public List<Feature> getEnabledGlobalFeatures() {

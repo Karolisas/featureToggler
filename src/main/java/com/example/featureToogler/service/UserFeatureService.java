@@ -24,6 +24,12 @@ public class UserFeatureService {
         this.userFeatureRepository = userFeatureRepository;
     }
 
+    /**
+     * Feature is enabled only for selected user by passing userId and featureId
+     * @param userId The user id
+     * @param featureId The feature id
+     * @return
+     */
     public UserFeature enableUserFeature(Long userId, Long featureId) {
         List<Long> features = Optional.ofNullable(userFeatureRepository.findAllByUserId(userId))
                 .map(userFeatures -> userFeatures.stream()
@@ -41,13 +47,23 @@ public class UserFeatureService {
         return userFeature;
     }
 
+    /**
+     * Returns the list of Features enabled personally only for the user
+     * @param userId The user id
+     * @return
+     */
     public List<UserFeature> getEnabledFeaturesOnlyForUser(Long userId) {
         List<UserFeature> features = new ArrayList<>();
         features.addAll(userFeatureRepository.findAllByUserId(userId));
         return features;
     }
 
-    public List<Feature> getGlobalEnabledAndUserFeatures(Long userId) {
+    /**
+     * Returns the list of Features enabled both globally and personally for the user
+     * @param userId The user id
+     * @return
+     */
+        public List<Feature> getGlobalEnabledAndUserFeatures(Long userId) {
         List<Feature> features = new ArrayList<>();
         features.addAll(featureService.getEnabledGlobalFeatures());
         features.addAll(featureService.findFeaturesById(
