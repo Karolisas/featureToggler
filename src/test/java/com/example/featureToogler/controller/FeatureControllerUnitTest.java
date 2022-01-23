@@ -3,6 +3,7 @@ package com.example.featureToogler.controller;
 import com.example.featureToogler.mockUsers.WithMockAdminUser;
 import com.example.featureToogler.mockUsers.WithMockSimpleAndAdminUser;
 import com.example.featureToogler.mockUsers.WithMockSimpleUser;
+import com.example.featureToogler.repository.UserRepository;
 import com.example.featureToogler.service.FeatureService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +43,9 @@ class FeatureControllerUnitTest {
 
     @MockBean
     FeatureService service;
+
+    @MockBean
+    UserRepository userRepository;
 
     @InjectMocks
     private FeatureController featureController;

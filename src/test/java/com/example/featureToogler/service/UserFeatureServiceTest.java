@@ -1,8 +1,10 @@
 package com.example.featureToogler.service;
 
 import com.example.featureToogler.dto.Feature;
+import com.example.featureToogler.dto.User;
 import com.example.featureToogler.repository.FeatureRepository;
 import com.example.featureToogler.repository.UserFeatureRepository;
+import com.example.featureToogler.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -34,8 +35,12 @@ class UserFeatureServiceTest {
     @Autowired
     UserFeatureRepository userFeatureRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     private Feature feature1;
     private Feature feature2;
+    private User user;
 
     @BeforeEach
     public void setUp() {
@@ -43,6 +48,10 @@ class UserFeatureServiceTest {
         feature2 = new Feature();
         featureService.createNewFeature(feature1);
         featureService.createNewFeature(feature2);
+
+        user = new User();
+        user.setId(USER_ID);
+        userRepository.save(user);
     }
 
     @AfterEach
@@ -63,7 +72,7 @@ class UserFeatureServiceTest {
         Assertions.assertEquals(true, featureService.getFeatures().containsAll(List.of(feature1, feature2)));
         Assertions.assertEquals(0, userFeatureService.getEnabledFeaturesOnlyForUser(feature1.getId()).size());
 
-        userFeatureService.enableUserFeature(1L, 2L);
+        userFeatureService.enableUserFeature(user.getId(), feature2.getId());
         Assertions.assertEquals(1, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
     }
@@ -74,7 +83,7 @@ class UserFeatureServiceTest {
         Assertions.assertEquals(0, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
 
-        userFeatureService.enableUserFeature(1L, 2L);
+        userFeatureService.enableUserFeature(user.getId(), feature1.getId());
         Assertions.assertEquals(1, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
     }

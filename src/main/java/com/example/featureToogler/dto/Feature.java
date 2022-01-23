@@ -1,10 +1,8 @@
 package com.example.featureToogler.dto;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "FEATURES")
@@ -19,6 +17,17 @@ public class Feature {
     @Id
     @GeneratedValue
     private Long id;
+
+    @ManyToMany(mappedBy = "features", cascade = CascadeType.ALL)
+    private List<User> users;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public Long getId() {
         return id;

@@ -1,10 +1,9 @@
 package com.example.featureToogler.dto;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "USER_FEATURES")
@@ -14,8 +13,10 @@ public class UserFeature {
     @GeneratedValue
     private Long id;
 
+    @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "feature_id")
     private Long featureId;
 
     public Long getUserId() {
