@@ -97,7 +97,7 @@ class UserFeatureControllerUnitTest {
     @Test
     @WithMockAdminUser
     void globalAndEnabledForUserFeatures_adminAllowedTest() throws Exception {
-        mockMvc.perform(addMockHttpServletRequestHeaders(get(USER_FEATURE_API_BASE_PATH + "/{userId}/featuresOwn", 1))
+        mockMvc.perform(addMockHttpServletRequestHeaders(get(USER_FEATURE_API_BASE_PATH + "/{userId}/features", 1))
                 )
                 .andDo(print())
                 .andExpect(status().isOk());

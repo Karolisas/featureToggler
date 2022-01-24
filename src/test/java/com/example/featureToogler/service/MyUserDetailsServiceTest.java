@@ -1,6 +1,7 @@
 package com.example.featureToogler.service;
 
 import com.example.featureToogler.repository.UserRepository;
+import com.example.featureToogler.security.MyUserDetailsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

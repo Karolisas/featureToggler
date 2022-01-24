@@ -1,4 +1,4 @@
-package com.example.featureToogler.service;
+package com.example.featureToogler.security;
 
 import com.example.featureToogler.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

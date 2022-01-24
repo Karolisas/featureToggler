@@ -70,43 +70,30 @@ class UserFeatureServiceTest {
     @Test
     public void enableUserFeature_singleFeatureTest() {
         Assertions.assertEquals(2, featureService.getFeatures().size());
-        Assertions.assertEquals(0, userFeatureService.getEnabledFeaturesOnlyForUser(feature1.getId()).size());
+        Assertions.assertEquals(0, userFeatureService.getGlobalEnabledAndUserFeatures(user.getId()).size());
 
         userFeatureService.enableUserFeature(user.getId(), feature2.getId());
-        Assertions.assertEquals(1, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
+        Assertions.assertEquals(1, userFeatureService.getGlobalEnabledAndUserFeatures(USER_ID).size());
         Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
     }
 
-    @Test
-    public void getEnabledFeaturesOnlyForUser() {
-        Assertions.assertEquals(2, featureService.getFeatures().size());
-        Assertions.assertEquals(0, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
-        Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
-
-        userFeatureService.enableUserFeature(user.getId(), feature1.getId());
-        Assertions.assertEquals(1, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
-        Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
-    }
 
     @Test
     public void getCommonEnabledAndUserFeatures() {
         Assertions.assertEquals(2, featureService.getFeatures().size());
-        Assertions.assertEquals(0, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(0, featureService.getEnabledGlobalFeatures().size());
         Assertions.assertEquals(0, userFeatureService.getGlobalEnabledAndUserFeatures(USER_ID).size());
 
 
-        userFeatureService.enableUserFeature(USER_ID, feature2.getId());
         featureService.setEnabledGlobalFeature(feature1.getId(), true);
+        userFeatureService.enableUserFeature(USER_ID, feature2.getId());
 
-        Assertions.assertEquals(1, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(1, featureService.getEnabledGlobalFeatures().size());
         Assertions.assertEquals(2, userFeatureService.getGlobalEnabledAndUserFeatures(USER_ID).size());
     }
 
     @Test
     public void getEnabledUserFeatures_notExist() {
-        Assertions.assertEquals(0, userFeatureService.getEnabledFeaturesOnlyForUser(USER_ID).size());
         Assertions.assertEquals(0, userFeatureService.getGlobalEnabledAndUserFeatures(USER_ID).size());
     }
 }

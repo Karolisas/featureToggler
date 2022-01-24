@@ -26,7 +26,8 @@ public class UserFeatureService {
 
     /**
      * Feature is enabled only for selected user by passing userId and featureId
-     * @param userId The user id
+     *
+     * @param userId    The user id
      * @param featureId The feature id
      * @return
      */
@@ -48,22 +49,12 @@ public class UserFeatureService {
     }
 
     /**
-     * Returns the list of Features enabled personally only for the user
-     * @param userId The user id
-     * @return
-     */
-    public List<UserFeature> getEnabledFeaturesOnlyForUser(Long userId) {
-        List<UserFeature> features = new ArrayList<>();
-        features.addAll(userFeatureRepository.findAllByUserId(userId));
-        return features;
-    }
-
-    /**
      * Returns the list of Features enabled both globally and personally for the user
+     *
      * @param userId The user id
      * @return
      */
-        public List<Feature> getGlobalEnabledAndUserFeatures(Long userId) {
+    public List<Feature> getGlobalEnabledAndUserFeatures(Long userId) {
         List<Feature> features = new ArrayList<>();
         features.addAll(featureService.getEnabledGlobalFeatures());
         features.addAll(featureService.findFeaturesById(

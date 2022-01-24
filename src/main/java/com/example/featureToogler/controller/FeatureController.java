@@ -31,14 +31,8 @@ public class FeatureController {
         return service.setEnabledGlobalFeature(featureId, isEnabled);
     }
 
-    @DeleteMapping ("/{id}")
+    @DeleteMapping("/{id}")
     public void deleteFeature(@PathVariable Long id) {
         service.deleteFeature(id);
     }
-
-    @GetMapping("/enabled")
-    public List<Feature> getEnabledGlobalFeatures() {
-        return service.getEnabledGlobalFeatures();
-    }
-
 }

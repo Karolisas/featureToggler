@@ -2,7 +2,6 @@ package com.example.featureToogler.service;
 
 import com.example.featureToogler.dto.Feature;
 import com.example.featureToogler.repository.FeatureRepository;
-import com.example.featureToogler.repository.UserFeatureRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
