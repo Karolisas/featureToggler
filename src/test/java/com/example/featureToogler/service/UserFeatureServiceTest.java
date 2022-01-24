@@ -69,7 +69,7 @@ class UserFeatureServiceTest {
 
     @Test
     public void enableUserFeature_singleFeatureTest() {
-        Assertions.assertEquals(true, featureService.getFeatures().containsAll(List.of(feature1, feature2)));
+        Assertions.assertEquals(2, featureService.getFeatures().size());
         Assertions.assertEquals(0, userFeatureService.getEnabledFeaturesOnlyForUser(feature1.getId()).size());
 
         userFeatureService.enableUserFeature(user.getId(), feature2.getId());

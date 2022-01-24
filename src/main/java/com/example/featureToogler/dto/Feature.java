@@ -76,7 +76,6 @@ public class Feature {
         return "Feature{" +
                 "enabledGlobally=" + enabledGlobally +
                 ", id=" + id +
-                ", users=" + users +
                 '}';
     }
 }
