@@ -1,11 +1,15 @@
 package com.example.featureToogler.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "FEATURES")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Feature {
 
     private boolean enabledGlobally;
@@ -55,13 +59,15 @@ public class Feature {
         Feature feature = (Feature) o;
 
         if (enabledGlobally != feature.enabledGlobally) return false;
-        return id != null ? id.equals(feature.id) : feature.id == null;
+        if (id != null ? !id.equals(feature.id) : feature.id != null) return false;
+        return users != null ? users.equals(feature.users) : feature.users == null;
     }
 
     @Override
     public int hashCode() {
         int result = (enabledGlobally ? 1 : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (users != null ? users.hashCode() : 0);
         return result;
     }
 
@@ -70,6 +76,7 @@ public class Feature {
         return "Feature{" +
                 "enabledGlobally=" + enabledGlobally +
                 ", id=" + id +
+                ", users=" + users +
                 '}';
     }
 }

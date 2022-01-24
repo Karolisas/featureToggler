@@ -1,8 +1,6 @@
 package com.example.featureToogler.dto;
 
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 
 @Entity
