@@ -15,12 +15,12 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "password",
+									"key": "username",
 									"value": "admin",
 									"type": "string"
 								},
 								{
-									"key": "username",
+									"key": "password",
 									"value": "admin",
 									"type": "string"
 								}
@@ -68,12 +68,12 @@
 							"basic": [
 								{
 									"key": "password",
-									"value": "admin",
+									"value": "pass",
 									"type": "string"
 								},
 								{
 									"key": "username",
-									"value": "admin",
+									"value": "user",
 									"type": "string"
 								}
 							]
@@ -116,12 +116,12 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "password",
+									"key": "username",
 									"value": "admin",
 									"type": "string"
 								},
 								{
-									"key": "username",
+									"key": "password",
 									"value": "admin",
 									"type": "string"
 								}
@@ -204,7 +204,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8081/users/1/features/2/",
+							"raw": "http://localhost:8081/users/1/features/3/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -214,7 +214,7 @@
 								"users",
 								"1",
 								"features",
-								"2",
+								"3",
 								""
 							]
 						}
@@ -232,12 +232,12 @@
 							"basic": [
 								{
 									"key": "password",
-									"value": "admin",
+									"value": "pass",
 									"type": "string"
 								},
 								{
 									"key": "username",
-									"value": "admin",
+									"value": "user",
 									"type": "string"
 								}
 							]
@@ -271,113 +271,6 @@
 								"1",
 								"features",
 								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "FeatureGlobalEnabled",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "admin",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "admin",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8081/features/enabled",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"features",
-								"enabled"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "FeaturesOnlyForUser_1",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "admin",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "admin",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8081/users/1/featuresOwn",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"users",
-								"1",
-								"featuresOwn"
 							]
 						}
 					},
